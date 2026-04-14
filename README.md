@@ -115,7 +115,91 @@ Backend runs on: `http://localhost:8080`
 
 Frontend runs on: `http://localhost:5173`
 
-## 📦 Features
+## � Database Setup
+
+The project includes pre-configured SQL files for quick database setup.
+
+### Quick Setup with SQL Files
+
+The `DB dataWatchStore` folder contains all necessary SQL files:
+
+**Available SQL Files:**
+
+- `salessavvy_users.sql` - User accounts and authentication
+- `salessavvy_categories.sql` - Product categories
+- `salessavvy_products.sql` - Product catalog
+- `salessavvy_productimages.sql` - Product images
+- `salessavvy_cart_items.sql` - Shopping cart data
+- `salessavvy_orders.sql` - Order management
+- `salessavvy_order_items.sql` - Order line items
+- `salessavvy_jwt_tokens.sql` - JWT token storage
+- `salessavvy_otp_table.sql` - OTP verification
+
+**Setup Steps:**
+
+1. **Create database:**
+
+   ```bash
+   mysql -u root -p
+   CREATE DATABASE salessavvy;
+   EXIT;
+   ```
+
+2. **Import SQL files (choose one method):**
+
+   **Method A - Command Line (Recommended):**
+
+   ```bash
+   cd DB\ dataWatchStore
+   mysql -u root -p salessavvy < salessavvy_users.sql
+   mysql -u root -p salessavvy < salessavvy_categories.sql
+   mysql -u root -p salessavvy < salessavvy_products.sql
+   mysql -u root -p salessavvy < salessavvy_productimages.sql
+   mysql -u root -p salessavvy < salessavvy_cart_items.sql
+   mysql -u root -p salessavvy < salessavvy_orders.sql
+   mysql -u root -p salessavvy < salessavvy_order_items.sql
+   mysql -u root -p salessavvy < salessavvy_jwt_tokens.sql
+   mysql -u root -p salessavvy < salessavvy_otp_table.sql
+   ```
+
+   **Method B - MySQL Workbench:**
+   - Open MySQL Workbench
+   - Connect to MySQL server
+   - Go to File → Run SQL Script
+   - Select each `.sql` file from `DB dataWatchStore` folder
+   - Execute
+
+3. **Verify setup:**
+   ```bash
+   mysql -u root -p salessavvy
+   SHOW TABLES;
+   ```
+
+For detailed database setup instructions, refer to [Backend Database Setup](./AVEX_WatchStore_backend/README.md#-database-setup)
+
+## 📸 Screenshots
+
+### Home Page - Hero Section
+
+![Home Page](Screenshots/Home_hero.png)
+
+### Product Catalog
+
+![Product Page](Screenshots/ProductPage.png)
+
+### Shopping Cart
+
+![Cart Page](Screenshots/cartpage.png)
+
+### Checkout & Payment
+
+![Checkout Page](Screenshots/checkoutpage.png)
+
+### Razorpay Payment Gateway
+
+![Razorpay Checkout](Screenshots/RozarpayCheckoutpage.png)
+
+## �📦 Features
 
 ### Backend Features
 

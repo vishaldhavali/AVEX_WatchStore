@@ -163,21 +163,86 @@ java -jar target/AVEX_WatchStore_backend-beta_v1.jar
 
 ## 📊 Database Setup
 
-1. Create MySQL database:
+### Option 1: Using SQL Files (Recommended)
+
+The `DB dataWatchStore` folder contains all the SQL files for the database tables.
+
+**Files included:**
+
+- `salessavvy_users.sql` - User accounts and authentication
+- `salessavvy_categories.sql` - Product categories
+- `salessavvy_products.sql` - Product catalog
+- `salessavvy_productimages.sql` - Product images
+- `salessavvy_cart_items.sql` - Shopping cart data
+- `salessavvy_orders.sql` - Order management
+- `salessavvy_order_items.sql` - Order line items
+- `salessavvy_jwt_tokens.sql` - JWT token storage
+- `salessavvy_otp_table.sql` - OTP verification
+
+**Steps to set up:**
+
+1. Create the database:
+
+   ```sql
+   CREATE DATABASE salessavvy;
+   USE salessavvy;
+   ```
+
+2. Import SQL files using MySQL command line:
+
+   ```bash
+   mysql -u root -p salessavvy < "DB dataWatchStore/salessavvy_users.sql"
+   mysql -u root -p salessavvy < "DB dataWatchStore/salessavvy_categories.sql"
+   mysql -u root -p salessavvy < "DB dataWatchStore/salessavvy_products.sql"
+   mysql -u root -p salessavvy < "DB dataWatchStore/salessavvy_productimages.sql"
+   mysql -u root -p salessavvy < "DB dataWatchStore/salessavvy_cart_items.sql"
+   mysql -u root -p salessavvy < "DB dataWatchStore/salessavvy_orders.sql"
+   mysql -u root -p salessavvy < "DB dataWatchStore/salessavvy_order_items.sql"
+   mysql -u root -p salessavvy < "DB dataWatchStore/salessavvy_jwt_tokens.sql"
+   mysql -u root -p salessavvy < "DB dataWatchStore/salessavvy_otp_table.sql"
+   ```
+
+3. Or import all at once:
+
+   ```bash
+   cat "DB dataWatchStore"/*.sql | mysql -u root -p salessavvy
+   ```
+
+4. Or use MySQL Workbench:
+   - Open MySQL Workbench
+   - Connect to your MySQL server
+   - Go to File → Run SQL Script
+   - Select each SQL file from `DB dataWatchStore` folder
+   - Execute
+
+### Option 2: Auto-creation by Hibernate
+
+Alternatively, Hibernate can auto-create tables based on entity definitions:
+
+1. Create empty database:
 
    ```sql
    CREATE DATABASE salessavvy;
    ```
 
-2. Hibernate will auto-create tables based on entity definitions
+2. Application will create tables on first run
+   - Set `spring.jpa.hibernate.ddl-auto=update` in `application.properties`
+   - Run the application: `mvn spring-boot:run`
+   - Tables will be created from entity definitions
 
-3. Database schema includes:
-   - Users (with roles)
-   - Products
-   - Categories
-   - Orders
-   - Cart Items
-   - Product Images
+### Database Schema
+
+The database includes the following tables:
+
+- **users** - User accounts and authentication
+- **categories** - Product categories
+- **products** - Product catalog
+- **productimages** - Product images
+- **cart_items** - Shopping cart items
+- **orders** - Customer orders
+- **order_items** - Order line items
+- **jwt_tokens** - JWT token tracking
+- **otp_table** - OTP for email verification
 
 ## 🔒 Security Notes
 
