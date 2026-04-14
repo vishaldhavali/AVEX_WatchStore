@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,9 +49,16 @@ public class OrderService {
 
         BigDecimal total = BigDecimal.ZERO;
 
+        // Batch-fetch all watches to avoid N+1 queries
+        List<Long> watchIds = cartItems.stream().map(CartItem::getWatchId).collect(Collectors.toList());
+        Map<Long, Watch> watchMap = watchRepository.findAllById(watchIds).stream()
+                .collect(Collectors.toMap(Watch::getId, Function.identity()));
+
         for (CartItem cartItem : cartItems) {
-            Watch watch = watchRepository.findById(cartItem.getWatchId())
-                    .orElseThrow(() -> new EntityNotFoundException("Watch not found with id: " + cartItem.getWatchId()));
+            Watch watch = watchMap.get(cartItem.getWatchId());
+            if (watch == null) {
+                throw new EntityNotFoundException("Watch not found with id: " + cartItem.getWatchId());
+            }
 
             if (watch.getStockQuantity() < cartItem.getQuantity()) {
                 throw new IllegalArgumentException("Insufficient stock for watch: " + watch.getName());

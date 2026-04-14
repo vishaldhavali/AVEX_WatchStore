@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,23 +25,21 @@ public class CartService {
 
     @Transactional
     public CartItem addItem(String userId, Long watchId, Integer quantity) {
-        // Validate the watch exists and has sufficient stock
         Watch watch = watchService.getWatchById(watchId);
         if (watch.getStockQuantity() < quantity) {
             throw new IllegalArgumentException("Insufficient stock for watch: " + watch.getName());
         }
 
         // If the item already exists in cart, update quantity
-        List<CartItem> existing = cartItemRepository.findByUserId(userId);
-        for (CartItem item : existing) {
-            if (item.getWatchId().equals(watchId)) {
-                int newQty = item.getQuantity() + quantity;
-                if (watch.getStockQuantity() < newQty) {
-                    throw new IllegalArgumentException("Insufficient stock for watch: " + watch.getName());
-                }
-                item.setQuantity(newQty);
-                return cartItemRepository.save(item);
+        Optional<CartItem> existing = cartItemRepository.findByUserIdAndWatchId(userId, watchId);
+        if (existing.isPresent()) {
+            CartItem item = existing.get();
+            int newQty = item.getQuantity() + quantity;
+            if (watch.getStockQuantity() < newQty) {
+                throw new IllegalArgumentException("Insufficient stock for watch: " + watch.getName());
             }
+            item.setQuantity(newQty);
+            return cartItemRepository.save(item);
         }
 
         CartItem cartItem = CartItem.builder()
