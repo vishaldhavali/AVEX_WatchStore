@@ -1,0 +1,41 @@
+# AVEX WatchStore Backend Configuration
+# Copy this file to application.properties and fill in with your actual values
+# DO NOT commit application.properties to version control
+
+# Application Configuration
+spring.application.name=AVEX_WatchStore_backend
+server.port=8080
+
+# Database Configuration
+spring.datasource.url=jdbc:mysql://localhost:3306/WatchStore_DB
+spring.datasource.username=root
+spring.datasource.password=your_database_password_here
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=false
+
+# JWT Configuration
+# Use a strong, random secret key for production
+# Example: Generate using: openssl rand -base64 32
+jwt.secret=your_strong_jwt_secret_key_here_minimum_32_characters
+
+# Razorpay Payment Gateway Configuration
+# Get these from https://dashboard.razorpay.com
+RazorKey.ID=rzp_test_your_key_id_here
+RazorKey.Secret=your_razorpay_secret_here
+
+# Email Configuration (Gmail SMTP)
+# For Gmail, use an App Password: https://myaccount.google.com/apppasswords
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=your_email@gmail.com
+spring.mail.password=your_app_specific_password_here
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+spring.mail.default-encoding=UTF-8
+
+# Error Handling
+spring.web.error.include-message=always
+spring.web.error.include-binding-errors=always
+spring.web.error.include-stacktrace=on_param
+spring.web.error.include-exception=false
+spring.web.resources.add-mappings=false
